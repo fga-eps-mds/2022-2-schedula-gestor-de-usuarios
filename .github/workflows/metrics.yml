@@ -22,7 +22,7 @@ jobs:
           node-version: 16.x
 
       - name: Create Metrics SonarCloud
-        run: node metrics/sonar-metrics.ts.mjs ${{ github.event.repository.name }} ${{ github.ref_name }}
+        run: python metrics/sonar-metrics.py ${{ github.event.repository.name }} ${{ steps.previoustag.outputs.tag }}
 
       - name: Commit Metrics SonarCloud File
         run: |
@@ -30,6 +30,7 @@ jobs:
           git config --global user.name "${{ secrets.USER_USERNAME }}"
           git clone --single-branch --branch main "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fga-eps-mds/2022-2-Schedula-Doc" docs
           mkdir -p docs/analytics-raw-data
+          cp -R fga-eps-mds*.json docs/analytics-raw-data
           cd docs
           git add .
           git commit -m "Métricas SonarCloud - ${{ github.event.repository.name }} ${{ github.ref_name }}"

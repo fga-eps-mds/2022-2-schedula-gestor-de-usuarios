@@ -1,6 +1,13 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
-export class ReqLoginUserDto {
+export class ReqAuthUserDto {
+  @IsOptional()
   @IsEmail(
     {},
     {
@@ -12,6 +19,7 @@ export class ReqLoginUserDto {
   })
   email?: string;
 
+  @IsOptional()
   @MaxLength(200, {
     message: 'O nome deve ter menos de 200 caracteres',
   })
@@ -24,8 +32,4 @@ export class ReqLoginUserDto {
     message: 'A senha deve ter no mínimo 6 caracteres',
   })
   password: string;
-}
-
-export class ResLoginUserDto {
-  token: string;
 }

@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
@@ -50,6 +51,14 @@ export class UsersService {
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
+
+  async findUsers(): Promise<User[]> {
+    const users = this.userRepository.find();
+    if (!users)
+      throw new NotFoundException('Não existem agendamentos cadastrados');
+    return users;
+  }
+
   async findUserById(userId: string): Promise<User> {
     const user = await this.userRepository.findOne({
       select: ['email', 'name', 'profile', 'id'],
@@ -60,7 +69,7 @@ export class UsersService {
     return user;
   }
   async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<User> {
-    const user = await this.findUserById(id);
+    const user = await this.userRepository.findOneBy({ id: id });
     const { name, username, email, position, profile } = updateUserDto;
     user.name = name ? name : user.name;
     user.username = username ? username : user.username;

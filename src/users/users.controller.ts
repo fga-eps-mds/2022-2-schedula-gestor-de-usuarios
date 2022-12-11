@@ -13,9 +13,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('users')
+@Controller('/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
@@ -29,6 +30,12 @@ export class UsersController {
       message: 'Usuario cadastrado com sucesso',
     };
   }
+  @Get()
+  async getUsers(): Promise<User[]> {
+    const users = await this.usersService.findUsers();
+    return users;
+  }
+
   @Get(':id')
   async findUserById(@Param('id') id): Promise<ReturnUserDto> {
     const user = await this.usersService.findUserById(id);
@@ -37,12 +44,12 @@ export class UsersController {
       message: 'Usuário encontrado',
     };
   }
-  @Patch(':id')
+  @Put(':id')
   async updateUser(
-    @Body(ValidationPipe) updateUsuarioDto: UpdateUserDto,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
     @Param('id') id: string,
   ) {
-    return this.usersService.updateUser(updateUsuarioDto, id);
+    return this.usersService.updateUser(updateUserDto, id);
   }
   @Delete(':id')
   async deleteUser(@Param('id') id: string) {

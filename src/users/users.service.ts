@@ -1,34 +1,34 @@
 import {
   Injectable,
-  UnprocessableEntityException,
   ConflictException,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUsuarioDto } from './dtos/create-usuario.dto';
-import { UpdateUsuarioDto } from './dtos/update-usuario.dto';
-import { Usuario } from './usuario.entity';
-import { UsuarioPerfil } from './usuario-perfis.enum';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
+import { UserProfile } from './user-profiles.enum';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 
 @Injectable()
-export class UsuariosService {
+export class UsersService {
   constructor(
-    @InjectRepository(Usuario)
-    private usuarioRepository: Repository<Usuario>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
-  async createUsuario(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-    const { email, nome, username, perfil, cargo, password } = createUsuarioDto;
-    const user = this.usuarioRepository.create();
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const { email, name, username, profile, position, password } =
+      createUserDto;
+    const user = this.userRepository.create();
     user.email = email;
-    user.nome = nome;
-    user.perfil = UsuarioPerfil[perfil];
+    user.name = name;
+    user.profile = UserProfile[profile];
     user.username = username;
-    user.cargo = cargo;
+    user.position = position;
     user.confirmationToken = crypto.randomBytes(32).toString('hex');
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
@@ -50,26 +50,23 @@ export class UsuariosService {
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
-  async findUsuarioById(userId: string): Promise<Usuario> {
-    const user = await this.usuarioRepository.findOne({
-      select: ['email', 'nome', 'perfil', 'id'],
+  async findUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      select: ['email', 'name', 'profile', 'id'],
     });
 
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
     return user;
   }
-  async updateUsuario(
-    updateUsuarioDto: UpdateUsuarioDto,
-    id: string,
-  ): Promise<Usuario> {
-    const user = await this.findUsuarioById(id);
-    const { nome, username, email, cargo, perfil } = updateUsuarioDto;
-    user.nome = nome ? nome : user.nome;
+  async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<User> {
+    const user = await this.findUserById(id);
+    const { name, username, email, position, profile } = updateUserDto;
+    user.name = name ? name : user.name;
     user.username = username ? username : user.username;
     user.email = email ? email : user.email;
-    user.cargo = cargo ? cargo : user.cargo;
-    user.perfil = perfil ? perfil : user.perfil;
+    user.position = position ? position : user.position;
+    user.profile = profile ? profile : user.profile;
 
     try {
       await user.save();
@@ -80,8 +77,8 @@ export class UsuariosService {
       );
     }
   }
-  async deleteUsuario(userId: string) {
-    const result = await this.usuarioRepository.delete({ id: userId });
+  async deleteUser(userId: string) {
+    const result = await this.userRepository.delete({ id: userId });
     if (result.affected === 0) {
       throw new NotFoundException(
         'Não foi encontrado um usuário com o ID informado',

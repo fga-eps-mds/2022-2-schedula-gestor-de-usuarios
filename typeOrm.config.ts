@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Usuario } from './src/usuarios/usuario.entity';
+import { User } from './src/users/user.entity';
 import { teste1670717950519 } from './migrations/1670717950519-teste';
 
 const configService = new ConfigService();

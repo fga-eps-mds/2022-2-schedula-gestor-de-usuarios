@@ -10,7 +10,7 @@ import {
 
 @Entity()
 @Unique(['email'])
-export class Usuario extends BaseEntity {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -18,16 +18,16 @@ export class Usuario extends BaseEntity {
   email: string;
 
   @Column({ nullable: false, type: 'varchar' })
-  nome: string;
+  name: string;
 
   @Column({ nullable: false, type: 'varchar' })
   username: string;
 
   @Column({ nullable: false, type: 'varchar', length: 200 })
-  cargo: string;
+  position: string;
 
   @Column({ nullable: false, type: 'varchar', length: 20 })
-  perfil: string;
+  profile: string;
 
   @Column({ nullable: false })
   password: string;

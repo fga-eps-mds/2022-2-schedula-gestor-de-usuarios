@@ -1,12 +1,12 @@
-import { UsuarioPerfil } from '../usuario-perfis.enum';
+import { UserProfile } from '../user-profiles.enum';
 import { IsString, IsEmail, IsOptional } from 'class-validator';
-export class UpdateUsuarioDto {
-  /*Nome*/
+export class UpdateUserDto {
+  /*Name*/
   @IsOptional()
   @IsString({
     message: 'Informe um nome válido',
   })
-  nome: string;
+  name: string;
 
   /*Username*/
   @IsOptional()
@@ -25,14 +25,14 @@ export class UpdateUsuarioDto {
   )
   email: string;
 
-  /*Cargo*/
+  /*Position*/
   @IsOptional()
   @IsString({
     message: 'Informe um cargo válido',
   })
-  cargo: string;
+  position: string;
 
-  /*Perfil*/
+  /*Profile*/
   @IsOptional()
-  perfil: UsuarioPerfil;
+  profile: UserProfile;
 }

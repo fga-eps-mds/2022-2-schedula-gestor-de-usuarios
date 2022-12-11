@@ -3,7 +3,7 @@
 // Possibilidade de usar o decorator @Matches para aumentar a segurança das senhas
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export class CreateUsuarioDto {
+export class CreateUserDto {
   /*Email*/
 
   @IsNotEmpty({
@@ -20,7 +20,7 @@ export class CreateUsuarioDto {
   })
   email: string;
 
-  /*Nome*/
+  /*Name*/
 
   @IsNotEmpty({
     message: 'Informe o nome do usuário',
@@ -28,7 +28,7 @@ export class CreateUsuarioDto {
   @MaxLength(200, {
     message: 'O nome deve ter menos de 200 caracteres',
   })
-  nome: string;
+  name: string;
 
   /*Username*/
 
@@ -40,7 +40,7 @@ export class CreateUsuarioDto {
   })
   username: string;
 
-  /*Cargo*/
+  /*Position*/
 
   @IsNotEmpty({
     message: 'Informe um cargo',
@@ -48,16 +48,16 @@ export class CreateUsuarioDto {
   @MaxLength(200, {
     message: 'O cargo deve ter menos de 200 caracteres',
   })
-  cargo: string;
+  position: string;
 
-  /*Perfil*/
+  /*Profile*/
 
   @IsNotEmpty({
     message: 'Informe um perfil de usuário',
   })
-  perfil: string;
+  profile: string;
 
-  /*Senha*/
+  /*Password*/
 
   @IsNotEmpty({
     message: 'Informe uma senha',

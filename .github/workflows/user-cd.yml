@@ -2,25 +2,29 @@ name: user-cd
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+
 jobs:
   ci:
-    uses: fga-eps-mds/2022-2-schedula-gestor-de-usuarios/.github/workflows/user-ci.yml@develop
+    uses: fga-eps-mds/2022-2-schedula-gestor-de-usuarios/.github/workflows/user-ci.yml@main
   build:
+    needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build app
-        run: docker-compose up -d app
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  deploy:
-    needs: [ ci, build ]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-        heroku_email: ${{secrets.HEROKU_EMAIL}}
-        remote_branch: main
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+          dockerfile_directory: ./
+
+          dockerfile_name: Dockerfile
+
+          docker_options: "--no-cache"
+
+          process_type: web       

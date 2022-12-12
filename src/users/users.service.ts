@@ -53,15 +53,15 @@ export class UsersService {
   }
 
   async findUsers(): Promise<User[]> {
-    const users = this.userRepository.find();
-    if (!users)
-      throw new NotFoundException('Não existem agendamentos cadastrados');
+    const users = await this.userRepository.find();
+    if (users.length === 0)
+      throw new NotFoundException('Não existem usuarios cadastrados');
     return users;
   }
 
   async findUserById(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne({
-      select: ['email', 'name', 'profile', 'id'],
+    const user = await this.userRepository.findOneBy({
+      id: userId,
     });
 
     if (!user) throw new NotFoundException('Usuário não encontrado');
@@ -70,6 +70,7 @@ export class UsersService {
   }
   async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ id: id });
+    if (!user) throw new NotFoundException('Usuário não encontrado');
     const { name, username, email, position, profile } = updateUserDto;
     user.name = name ? name : user.name;
     user.username = username ? username : user.username;
@@ -87,8 +88,9 @@ export class UsersService {
     }
   }
   async deleteUser(userId: string) {
-    const result = await this.userRepository.delete({ id: userId });
-    if (result.affected === 0) {
+    const user = await this.userRepository.delete({ id: userId });
+    if (!user) throw new NotFoundException('Usuário não encontrado');
+    if (user.affected === 0) {
       throw new NotFoundException(
         'Não foi encontrado um usuário com o ID informado',
       );

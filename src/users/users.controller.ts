@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Patch,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,7 +13,6 @@ import { UsersService } from './users.service';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/users')
 export class UsersController {

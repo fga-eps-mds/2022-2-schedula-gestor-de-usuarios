@@ -14,7 +14,7 @@ import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 
-@Controller('/users')
+@Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 

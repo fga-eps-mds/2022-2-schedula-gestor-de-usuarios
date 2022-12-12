@@ -1,7 +1,13 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  ValidationPipe,
+  Response,
+} from '@nestjs/common';
 import { ReqAuthUserDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { User } from '../users/user.entity';
+import { Response as Res } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -10,8 +16,9 @@ export class AuthController {
   @Post()
   async authUser(
     @Body(ValidationPipe) reqAuthUser: ReqAuthUserDto,
-  ): Promise<{ token: string }> {
+    @Response() res: Res,
+  ): Promise<Res> {
     const logged = await this.authService.Auth(reqAuthUser);
-    return { token: logged };
+    return res.set({ 'set-cookie': logged }).json({ token: logged });
   }
 }

@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import * as bc from 'bcrypt';
 import { User } from '../users/user.entity';
+import { UserProfile } from 'src/users/user-profiles.enum';
 
 @Injectable()
 export class AuthService {
@@ -34,6 +35,7 @@ export class AuthService {
         username: user.username,
         email: user.email,
         userId: user.id,
+        access: UserProfile[user.profile],
       };
       return this.jwtService.sign(payload);
     } else {

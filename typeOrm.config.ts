@@ -1,5 +1,7 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { User } from './src/users/user.entity';
+import { teste1670717950519 } from './migrations/1670717950519-teste';
 
 const configService = new ConfigService();
 
@@ -11,5 +13,5 @@ export default new DataSource({
   password: 'postgres',
   database: 'postgres',
   entities: ['./src/**/*.entity.ts'],
-  migrations: ['./src/migrations/*.ts'],
+  migrations: [teste1670717950519],
 });

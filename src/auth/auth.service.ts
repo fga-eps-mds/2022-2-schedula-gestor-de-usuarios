@@ -18,10 +18,11 @@ export class AuthService {
     const { email, password, username } = userData;
     let user;
     if (email) {
-      user = this.userRepo.findOneBy({ email });
+      user = await this.userRepo.findOneBy({ email });
     } else if (username) {
-      user = this.userRepo.findOneBy({ username });
+      user = await this.userRepo.findOneBy({ username });
     }
+    console.log(user);
     if (!user) {
       throw new Error('Usúario não encontrado');
     }

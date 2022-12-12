@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "schedula_user_db",
+  "port": 5103,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "schedula_user",
+  "entities": ["./src/**/*.entity.ts"],
+  "migrations": ["./src/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/migrations"
+  }
+}

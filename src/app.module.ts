@@ -12,12 +12,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ConfigModule.forRoot({ load: [configuration] }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'schedula_user_db',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'schedula_user',
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT),
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASS,
+      database: process.env.DATABASE_DB,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
       synchronize: true,
     }),
     AuthModule,

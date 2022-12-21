@@ -2,6 +2,6 @@
 
 export enum UserProfile {
   ADMIN = 'ADMIN',
-  ATENDENTE = 'ADMIN',
-  CONSULTA = 'USER',
+  BASIC = 'BASIC',
+  USER = 'USER',
 }

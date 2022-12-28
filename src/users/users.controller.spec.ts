@@ -25,7 +25,7 @@ describe('UsersController', () => {
     username: 'mockinho',
     email: 'mock@gmail.com',
     position: 'tech',
-    profile: UserProfile.ATENDENTE,
+    profile: UserProfile.ADMIN,
   };
 
   const mockUsersService = {

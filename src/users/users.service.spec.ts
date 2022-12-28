@@ -112,12 +112,12 @@ describe('UsersService', () => {
     const id = mockUuid;
     const dto = mockUpdateUserDto;
 
-    it('should return an updated issue successfully', async () => {
+    it('should return an updated user successfully', async () => {
       const response = await usersService.updateUser({ ...dto }, id);
       expect(response).toMatchObject({ ...mockUpdateUserDto });
     });
 
-    it('should return an internal server error exception when issue cannot be updated', async () => {
+    it('should return an internal server error exception when user cannot be updated', async () => {
       jest.spyOn(usersRepository, 'save').mockRejectedValue(new Error());
 
       expect(usersService.updateUser({ ...dto }, id)).rejects.toThrowError(

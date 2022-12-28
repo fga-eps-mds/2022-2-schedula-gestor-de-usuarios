@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
@@ -22,19 +21,16 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { email, name, username, profile, position, password } =
-      createUserDto;
-    const user = this.userRepository.create();
-    user.email = email;
-    user.name = name;
-    user.profile = UserProfile[profile];
-    user.username = username;
-    user.position = position;
-    user.confirmationToken = crypto.randomBytes(32).toString('hex');
-    user.salt = await bcrypt.genSalt();
-    user.password = await this.hashPassword(password, user.salt);
     try {
-      await user.save();
+      const user = this.userRepository.create({ ...createUserDto });
+      user.profile = UserProfile[createUserDto.profile];
+      user.confirmationToken = crypto.randomBytes(32).toString('hex');
+      user.salt = await bcrypt.genSalt();
+      user.password = await this.hashPassword(
+        createUserDto.password,
+        user.salt,
+      );
+      await this.userRepository.save(user);
       delete user.password;
       delete user.salt;
       return user;
@@ -79,7 +75,7 @@ export class UsersService {
     user.profile = profile ? profile : user.profile;
 
     try {
-      await user.save();
+      await this.userRepository.save(user);
       return user;
     } catch (error) {
       throw new InternalServerErrorException(

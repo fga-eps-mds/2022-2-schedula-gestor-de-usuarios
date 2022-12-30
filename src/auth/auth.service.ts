@@ -22,7 +22,6 @@ export class AuthService {
     } else if (username) {
       user = await this.userRepo.findOneBy({ username });
     }
-    console.log(user);
     if (!user) {
       throw new Error('Usúario não encontrado');
     }

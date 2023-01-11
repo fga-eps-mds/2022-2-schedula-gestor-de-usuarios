@@ -18,11 +18,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.DATABASE_PASS,
       database: process.env.DATABASE_DB,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
-      extra: {
-        ssl: {
-          rejectUnauthorized: false,
+      ...(process.env.ENVIRONMENT === 'PRODUCTION' && {
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
         },
-      },
+      }),
       synchronize: true,
     }),
     AuthModule,

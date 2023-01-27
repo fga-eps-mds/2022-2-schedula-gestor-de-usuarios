@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
+import { UserDto } from './dto/user.dto';
 
 @Controller('/users')
 export class UsersController {
@@ -29,7 +30,7 @@ export class UsersController {
     };
   }
   @Get()
-  async getUsers(): Promise<User[]> {
+  async getUsers(): Promise<UserDto[]> {
     const users = await this.usersService.findUsers();
     return users;
   }
@@ -46,11 +47,11 @@ export class UsersController {
   async updateUser(
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
     @Param('id') id: string,
-  ) {
+  ): Promise<UserDto> {
     return this.usersService.updateUser(updateUserDto, id);
   }
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
+  async deleteUser(@Param('id') id: string): Promise<{ message: string }> {
     await this.usersService.deleteUser(id);
     return {
       message: 'Usuário removido com sucesso',

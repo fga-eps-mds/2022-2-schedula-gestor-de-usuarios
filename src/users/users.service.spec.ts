@@ -12,6 +12,7 @@ import { v4 as uuid } from 'uuid';
 import { UserProfile } from './user-profiles.enum';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
 
 describe('UsersService', () => {
   let usersService: UsersService;
@@ -28,6 +29,14 @@ describe('UsersService', () => {
     password: 'mock123!',
   };
 
+  const mockReturnUserDto: UserDto = {
+    email: 'mock@mail.com',
+    name: 'Mock Mockerson',
+    username: 'mock',
+    position: 'police',
+    profile: UserProfile.ADMIN,
+  };
+
   const mockUpdateUserDto: UpdateUserDto = {
     email: 'mock@gmail.com',
     name: 'Mocking Mockerson',
@@ -36,7 +45,7 @@ describe('UsersService', () => {
     profile: UserProfile.ADMIN,
   };
 
-  const usersEntityList = [{ ...mockUserDto }];
+  const usersEntityList = [{ ...mockReturnUserDto }];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

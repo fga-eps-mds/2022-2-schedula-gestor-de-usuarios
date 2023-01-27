@@ -12,6 +12,7 @@ import { UserProfile } from './user-profiles.enum';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
     try {
       const user = this.userRepository.create({ ...createUserDto });
       user.profile = UserProfile[createUserDto.profile];
@@ -33,7 +34,13 @@ export class UsersService {
       await this.userRepository.save(user);
       delete user.password;
       delete user.salt;
-      return user;
+      return {
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        position: user.position,
+        profile: user.profile,
+      };
     } catch (error) {
       if (error.code.toString() === '23505') {
         throw new ConflictException('Endereço de email já está em uso');
@@ -48,23 +55,35 @@ export class UsersService {
     return bcrypt.hash(password, salt);
   }
 
-  async findUsers(): Promise<User[]> {
+  async findUsers(): Promise<UserDto[]> {
     const users = await this.userRepository.find();
     if (users.length === 0)
       throw new NotFoundException('Não existem usuarios cadastrados');
-    return users;
+    return users.map((user) => ({
+      username: user.username,
+      email: user.email,
+      name: user.name,
+      position: user.position,
+      profile: user.profile,
+    }));
   }
 
-  async findUserById(userId: string): Promise<User> {
+  async findUserById(userId: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({
       id: userId,
     });
 
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    return user;
+    return {
+      username: user.username,
+      email: user.email,
+      name: user.name,
+      position: user.position,
+      profile: user.profile,
+    };
   }
-  async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<User> {
+  async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ id: id });
     if (!user) throw new NotFoundException('Usuário não encontrado');
     const { name, username, email, position, profile } = updateUserDto;
@@ -76,7 +95,13 @@ export class UsersService {
 
     try {
       await this.userRepository.save(user);
-      return user;
+      return {
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        position: user.position,
+        profile: user.profile,
+      };
     } catch (error) {
       throw new InternalServerErrorException(
         'Erro ao salvar os dados no banco de dados',

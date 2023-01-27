@@ -25,7 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           },
         },
       }),
-      synchronize: false,
+      synchronize: true,
     }),
     AuthModule,
     UsersModule,

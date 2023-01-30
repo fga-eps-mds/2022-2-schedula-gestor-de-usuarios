@@ -6,14 +6,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
 import { UserDto } from './dto/user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/users')
 export class UsersController {
@@ -29,6 +30,8 @@ export class UsersController {
       message: 'Usuario cadastrado com sucesso',
     };
   }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUsers(): Promise<UserDto[]> {
     const users = await this.usersService.findUsers();

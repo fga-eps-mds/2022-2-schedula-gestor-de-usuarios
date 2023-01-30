@@ -20,6 +20,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @UseGuards(AuthGuard('admin'))
   @Post()
   async createUser(
     @Body(ValidationPipe) createUsuarioDto: CreateUserDto,

@@ -30,6 +30,7 @@ describe('UsersService', () => {
   };
 
   const mockReturnUserDto: UserDto = {
+    id: mockUuid,
     email: 'mock@mail.com',
     name: 'Mock Mockerson',
     username: 'mock',

@@ -38,6 +38,7 @@ export class AuthService {
         username: user.username,
         email: user.email,
         userId: user.id,
+        profile: user.profile,
       };
       return this.jwtService.sign(payload);
     } else {

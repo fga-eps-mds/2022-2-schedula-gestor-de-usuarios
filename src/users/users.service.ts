@@ -35,6 +35,7 @@ export class UsersService {
       delete user.password;
       delete user.salt;
       return {
+        id: user.id,
         username: user.username,
         email: user.email,
         name: user.name,
@@ -60,6 +61,7 @@ export class UsersService {
     if (users.length === 0)
       throw new NotFoundException('Não existem usuarios cadastrados');
     return users.map((user) => ({
+      id: user.id,
       username: user.username,
       email: user.email,
       name: user.name,
@@ -76,6 +78,7 @@ export class UsersService {
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
     return {
+      id: user.id,
       username: user.username,
       email: user.email,
       name: user.name,
@@ -96,6 +99,7 @@ export class UsersService {
     try {
       await this.userRepository.save(user);
       return {
+        id: user.id,
         username: user.username,
         email: user.email,
         name: user.name,

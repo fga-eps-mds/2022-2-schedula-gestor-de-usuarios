@@ -31,13 +31,14 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('admin'))
   @Get()
   async getUsers(): Promise<UserDto[]> {
     const users = await this.usersService.findUsers();
     return users;
   }
 
+  @UseGuards(AuthGuard('admin'))
   @Get(':id')
   async findUserById(@Param('id') id): Promise<ReturnUserDto> {
     const user = await this.usersService.findUserById(id);
@@ -46,6 +47,8 @@ export class UsersController {
       message: 'Usuário encontrado',
     };
   }
+
+  @UseGuards(AuthGuard('admin'))
   @Put(':id')
   async updateUser(
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
@@ -53,6 +56,8 @@ export class UsersController {
   ): Promise<UserDto> {
     return this.usersService.updateUser(updateUserDto, id);
   }
+
+  @UseGuards(AuthGuard('admin'))
   @Delete(':id')
   async deleteUser(@Param('id') id: string): Promise<{ message: string }> {
     await this.usersService.deleteUser(id);

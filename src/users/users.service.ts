@@ -21,6 +21,9 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
+  /* Cria um usuário */
+  /* Recebe os dados do usuário a ser criado */
+  /* Retorna os dados do usuário criado */
   async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
     try {
       const user = this.userRepository.create({ ...createUserDto });
@@ -51,10 +54,13 @@ export class UsersService {
       }
     }
   }
+  /*Encripta a senha*/
+  /* Recebe a senha e um salto*/
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
 
+  /* Encontra e retorna todos os usuários cadastrados */
   async findUsers(): Promise<UserDto[]> {
     const users = await this.userRepository.find();
     if (users.length === 0)
@@ -68,6 +74,8 @@ export class UsersService {
     }));
   }
 
+  /* Encontra e retorna um usuário */
+  /* Recebe o id do usuário como parâmetro */
   async findUserById(userId: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({
       id: userId,
@@ -83,6 +91,9 @@ export class UsersService {
       profile: user.profile,
     };
   }
+
+  /* Atualiza um usuário */
+  /* Recebe o id do usuário a ser atualizado e os dados do usuário atualizados como parâmetros */
   async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ id: id });
     if (!user) throw new NotFoundException('Usuário não encontrado');
@@ -108,6 +119,9 @@ export class UsersService {
       );
     }
   }
+
+  /* Deleta um usuário */
+  /* Recebe o id do usuário a ser deletado como parâmetro */
   async deleteUser(userId: string) {
     const user = await this.userRepository.delete({ id: userId });
     if (!user) throw new NotFoundException('Usuário não encontrado');

@@ -14,6 +14,7 @@ import { WhoAmIDto } from './dto/whoami.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /*Rota para a criação de uma nova sessão */
   @Post()
   async authUser(
     @Body(ValidationPipe) reqAuthUser: ReqAuthUserDto,
@@ -22,6 +23,7 @@ export class AuthController {
     return { token: logged };
   }
 
+  /*Rota para verificar a autorização de acordo com o perfil do usuário */
   @Get()
   whoAmI(@Headers('Authorization') authToken: string): WhoAmIDto {
     const userData = this.authService.whoAmI(authToken);

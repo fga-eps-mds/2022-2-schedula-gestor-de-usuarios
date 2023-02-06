@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { User } from '../users/user.entity';
 
+/*módulo de autenticação*/
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),

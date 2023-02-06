@@ -1,3 +1,4 @@
+/*Configuração padrão em relação ao banco de dados e o ambiente*/
 export default () => ({
   database: {
     host: 'postgres',

@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+/*Módulo da aplicação*/
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration] }),

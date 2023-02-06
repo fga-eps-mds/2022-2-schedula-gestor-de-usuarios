@@ -19,9 +19,12 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /* Recebe o login e senha de um usuário */
+  /* Retorna os dados de um usuário cadastrado */
   async Auth(userData: ReqAuthUserDto) {
     const { email, password, username } = userData;
     let user;
+    /*Verifica se o valor posto no campo de login trata-se de um email ou um nome de usuário */
     if (email) {
       user = await this.userRepo.findOneBy({ email });
     } else if (username) {
@@ -45,6 +48,7 @@ export class AuthService {
     }
   }
 
+  /*Retorna os dados de um usuário presentes no token*/
   whoAmI(authToken: string) {
     try {
       const token = authToken.replace('Bearer ', '');

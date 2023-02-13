@@ -49,12 +49,19 @@ export class AuthService {
   }
 
   /*Retorna os dados de um usuário presentes no token*/
-  whoAmI(authToken: string) {
+  async whoAmI(authToken: string) {
     try {
       const token = authToken.replace('Bearer ', '');
       const tokenData = this.jwtService.decode(token) as WhoAmIDto;
+      const user = await this.userRepo.findOneBy({ email: tokenData.email });
 
-      return tokenData;
+      return {
+        email: user.email,
+        username: user.username,
+        userId: user.id,
+        name: user.name,
+        profile: user.profile,
+      };
     } catch (e) {
       console.log('Token decode error: ', e);
       throw new UnauthorizedException('Token de autenticação inválido');

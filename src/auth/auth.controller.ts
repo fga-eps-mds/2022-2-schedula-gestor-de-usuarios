@@ -25,7 +25,7 @@ export class AuthController {
 
   /*Rota para verificar a autorização de acordo com o perfil do usuário */
   @Get()
-  whoAmI(@Headers('Authorization') authToken: string): WhoAmIDto {
+  whoAmI(@Headers('Authorization') authToken: string): any {
     const userData = this.authService.whoAmI(authToken);
     return userData;
   }

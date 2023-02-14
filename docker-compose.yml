@@ -4,7 +4,10 @@ services:
   app:
     container_name: schedula_user
     image: schedula/user
-    build: .
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
     volumes:
       - '.:/code/'
     ports:
